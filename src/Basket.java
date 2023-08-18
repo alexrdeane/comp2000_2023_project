@@ -57,18 +57,23 @@ public class Basket implements BasketInterface {
     }
 
     @Override
-    public void processTransaction(Player from, Seller to) {
+    public void processTransaction(Player from, Seller to) throws CustomExceptions {
         ArrayList<ItemInterface> transactionItems = new ArrayList<>();
         boolean rollback = false;
         // Remove/sell items from the `from` parameter
         for (int i = 0; i < items.size() && !rollback; i++) {
             for (int q = 0; q < quantities.get(i); q++) {
-                ItemInterface saleItem = from.sell(items.get(i).getInventoryTableRow().getColumnOne());
-                if (saleItem == null) {
+                ItemInterface saleItem;
+                try {
+                    saleItem = from.sell(items.get(i).getInventoryTableRow().getColumnOne());
+                    if (saleItem == null) {
                     rollback = true;
                     break;  // Trigger transaction rollback
                 }
                 transactionItems.add(saleItem);
+                } catch (CustomExceptions e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -84,18 +89,24 @@ public class Basket implements BasketInterface {
     }
 
     @Override
-    public void processTransaction(Seller from, Player to) {
+    public void processTransaction(Seller from, Player to) throws CustomExceptions {
         ArrayList<ItemInterface> transactionItems = new ArrayList<>();
         boolean rollback = false;
         // Remove/sell items from the `from` parameter
         for (int i = 0; i < items.size() && !rollback; i++) {
             for (int q = 0; q < quantities.get(i); q++) {
-                ItemInterface saleItem = from.sell(items.get(i).getInventoryTableRow().getColumnOne());
-                if (saleItem == null) {
+                ItemInterface saleItem;
+                try {
+                    saleItem = from.sell(items.get(i).getInventoryTableRow().getColumnOne());
+                     if (saleItem == null) {
                     rollback = true;
                     break;  // Trigger transaction rollback
                 }
                 transactionItems.add(saleItem);
+                } catch (CustomExceptions e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
         if (rollback) {

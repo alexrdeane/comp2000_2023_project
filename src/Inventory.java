@@ -41,10 +41,10 @@ public class Inventory {
      * @param itemName
      * @return An Item matching the `itemName`
      */
-    public ItemInterface removeOne(String itemName) {   
+    public ItemInterface removeOne(String itemName) throws CustomExceptions {   
         int removeFromIdx = indexOfItemByName(itemName);
         if (removeFromIdx == -1) {
-            return null;
+            throw new CustomExceptions(itemName);
         }
 
         return stock.remove((int) removeFromIdx);
