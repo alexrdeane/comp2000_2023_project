@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface ItemInterface {
     /**
      * @return the Items name
@@ -39,4 +41,10 @@ public interface ItemInterface {
      * @return true if the Items definition matches 'def'
      */
     boolean isOf(ItemDefinition def);
+
+
+    //list of resources used to craft
+    List<ItemInterface> getComponents();
+    void craft(Player player) throws ItemNotAvailableException;
+    void dismantle(Player player);
 }

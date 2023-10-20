@@ -1,10 +1,16 @@
+import java.util.Collections;
+import java.util.List;
+
 public class Item implements ItemInterface {
     private ItemDefinition definition;
 
     /**
      * Creates an Item instance with a set definition.
-     * The composition list is (created but) left empty. For composite items, the sub-components
-     * should be retrieved/removed from some item source, and added with Item::Add(ItemInterface).
+     * The composition list is (created but) left empty. For composite items, the
+     * sub-components
+     * should be retrieved/removed from some item source, and added with
+     * Item::Add(ItemInterface).
+     * 
      * @param def
      */
     public Item(ItemDefinition def) {
@@ -35,9 +41,11 @@ public class Item implements ItemInterface {
 
     @Override
     public String getCompositionDescription() {
-        // For craftable items, this method should return a description describing/listing the
+        // For craftable items, this method should return a description
+        // describing/listing the
         // other items which make up this item.
-        // When a non-empty String is returned, the uncraft button will appear in the UI.
+        // When a non-empty String is returned, the uncraft button will appear in the
+        // UI.
         return "";
     }
 
@@ -54,9 +62,23 @@ public class Item implements ItemInterface {
     @Override
     public String toString() {
         String output = String.format("Item: %s\nDescription: %s\nWeight: %.2f",
-            getName(), getDescription(), getWeight());
+                getName(), getDescription(), getWeight());
         output += "\nHashCode: " + Integer.toHexString(this.hashCode());
         return output;
     }
 
+    @Override
+    public List<ItemInterface> getComponents() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void craft(Player player) throws ItemNotAvailableException {
+        throw new UnsupportedOperationException("Crafting not supported for base items");
+    }
+
+    @Override
+    public void dismantle(Player player) {
+        throw new UnsupportedOperationException("Dismantling not supported for base items");
+    }
 }

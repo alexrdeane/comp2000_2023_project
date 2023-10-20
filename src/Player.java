@@ -1,4 +1,6 @@
-public class Player {
+import java.util.ArrayList;
+
+public class Player implements Observer {
     private String name;
     private Inventory inventory;
     private double carryWeightCapacity;
@@ -56,5 +58,16 @@ public class Player {
         }
         inventory.addOne(storage.retrieve(item));
     }
-    
+
+    @Override
+    public void update(Inventory storageInventory) {
+        this.storageView = new Inventory(storageInventory.searchItems(""));
+    }
+    public void SetStorageView(Storage storage) {
+        // sets the current storageview as this current storage
+        this.storageView = storage.getInventory();
+        // subscribes the player to the current storage
+        storage.Subscribe(this);
+    }
+
 }
