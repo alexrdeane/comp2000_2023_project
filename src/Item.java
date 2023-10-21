@@ -73,7 +73,7 @@ public class Item implements ItemInterface {
     }
 
     @Override
-    public void craft(Player player) throws ItemNotAvailableException {
+    public void craft(Player player) throws ItemNotAvailableException, ExceedWeightCapacity {
         throw new UnsupportedOperationException("Crafting not supported for base items");
     }
 

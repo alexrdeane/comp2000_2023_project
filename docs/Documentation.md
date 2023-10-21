@@ -15,6 +15,12 @@ Structural pattern - *Composite* pattern.
 
 ## Itemise changes made (which class files were modified)
 1. 
+App.java - added crafting functionality
+CraftableItem.java - created craftableItem to store extra information like componenets and weight functions
+Item.java - changed the throws to also implement weight capacity
+ItemInterface.java - same as Item.java
+Player.java - removed weight check in retrieve and added a call to addItem to make simpler as well as some material bools to see if player has required materials
+
 
 # Task 3
 

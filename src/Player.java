@@ -49,14 +49,10 @@ public class Player implements Observer {
     }
 
     public void retrieve(ItemInterface item, Storage storage) throws ItemNotAvailableException, ExceedWeightCapacity {
-        // Does the Storage have the item we are trying to retrieve
         if (!storageView.searchItems("").contains(item)) {
             throw new ItemNotAvailableException(item.getDefinition());
         }
-        if (getCurrentWeight() + item.getWeight() > getCarryCapacity()) {
-            throw new ExceedWeightCapacity(this, item);
-        }
-        inventory.addOne(storage.retrieve(item));
+        addItem(storage.retrieve(item));
     }
 
     @Override
@@ -69,5 +65,39 @@ public class Player implements Observer {
         // subscribes the player to the current storage
         storage.Subscribe(this);
     }
+
+
+    //added so that crafting can check if play has the material
+    public boolean hasMaterial(ItemInterface item) {
+        return inventory.searchItems("").contains(item);
+    }
+
+    //if the material is used in crafting remove it
+    public void removeMaterial(ItemInterface item) throws ItemNotAvailableException {
+        if (!hasMaterial(item)) {
+            throw new ItemNotAvailableException(item.getDefinition());
+        }
+        inventory.remove(item);
+    }
+
+
+    public void addItem(ItemInterface item) throws ExceedWeightCapacity {
+        if (getCurrentWeight() + item.getWeight() > getCarryCapacity()) {
+            throw new ExceedWeightCapacity(this, item);
+        }
+        inventory.addOne(item);
+    }
+
+    public void craftItem(CraftableItem craftableItem) throws ItemNotAvailableException, ExceedWeightCapacity {
+        for (ItemInterface component : craftableItem.getComponents()) {
+            if (!hasMaterial(component)) {
+                System.out.println("Missing material: " + component.getName()); // log missing material
+                throw new ItemNotAvailableException(component.getDefinition());
+            }
+            removeMaterial(component);
+        }
+        addItem(craftableItem);
+    }
+    
 
 }

@@ -50,10 +50,31 @@ public class App {
     }
 
     void setupCrafting(ItemCraftPage page, Player player) {
-        page.setCraftAction((def) -> System.out.println("Crafting not implemented"));
+        page.setCraftAction((def) -> {
+            CraftableItem craftableItem = new CraftableItem(def);
+
+            //checks if the player has required materials for the craft
+            for (ItemInterface component : craftableItem.getComponents()) {
+                if (!player.hasMaterial(component)) {
+                    System.out.println("Required materials missing for crafting.");
+                    return;
+                }
+            }
+
+            //checks if crafting the item would go over weight capacity of user
+            if (player.getCurrentWeight() + craftableItem.getWeight() > player.getCarryCapacity()) {
+                System.out.println("Crafting failed. Weight capacity limit reached.");
+                return;
+            }
+
+            //crafts the item and puts it in users inventory
+            craftableItem.craft(player);
+            System.out.println(craftableItem.getName() + " crafted successfully!");
+        });
     }
 
     void setupUncrafting(ProductPage page, Player player) {
         page.setUncraftAction((item) -> System.out.println("Uncrafting not implemented"));
+        //no longer need to do this
     }
 }

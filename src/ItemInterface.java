@@ -45,6 +45,6 @@ public interface ItemInterface {
 
     //list of resources used to craft
     List<ItemInterface> getComponents();
-    void craft(Player player) throws ItemNotAvailableException;
+    void craft(Player player) throws ItemNotAvailableException, ExceedWeightCapacity;
     void dismantle(Player player);
 }
